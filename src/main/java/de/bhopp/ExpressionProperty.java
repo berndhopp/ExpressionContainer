@@ -3,23 +3,18 @@ package de.bhopp;
 import com.vaadin.data.Property;
 
 class ExpressionProperty implements Property {
-    private BeanItem beanItem;
+    private Object bean;
     private final Accessor accessor;
-    private Object value;
     private boolean readOnly;
 
-    ExpressionProperty(BeanItem beanItem, Accessor accessor) {
-        this.beanItem = beanItem;
+    ExpressionProperty(Object bean, Accessor accessor) {
+        this.bean = bean;
         this.accessor = accessor;
         readOnly = false;
     }
 
     public Object getValue() {
-        if(value == null){
-            value = accessor.get(beanItem.bean);
-        }
-
-        return value;
+        return accessor.get(bean);
     }
 
     public void setValue(Object newValue) throws ReadOnlyException {
@@ -27,8 +22,7 @@ class ExpressionProperty implements Property {
             throw new ReadOnlyException();
         }
 
-        accessor.set(beanItem.bean, newValue);
-        this.value = newValue;
+        accessor.set(bean, newValue);
     }
 
     public Class getType() {
